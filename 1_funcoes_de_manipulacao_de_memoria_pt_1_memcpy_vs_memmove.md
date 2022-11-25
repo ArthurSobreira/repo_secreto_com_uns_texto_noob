@@ -14,7 +14,7 @@ Para manipular a memória, primeiro é preciso entender minimamente o que é a m
 int main ()
 {
 	int x, y;
-	char a, *b, c[10];
+	char a, *b, *c[10];
 
 	printf("x = %p \
 	\ny = %p \
@@ -44,8 +44,10 @@ y = 100 // int (4 bytes)
 b = 104 // ponteiro vazio (8 bytes)
 c = 112 // 10 ponteiros vazios (80 bytes)
 ```
+![](imagens/memory_variables.png)
 
 Note que o char tem o menor endereço na memória, como ele ocupa apenas 1 byte, então a próxima variável já está 1 posição de distância. Como o x (int) ocupa 4 bytes, a próxima variável y (int) está 4 posições de distância de x, e, consequentemente, 5 de distância do char a.
+
 
 Tá, agora guarda essa ideia que já vamos voltar nela. Primeiro, vamos implementar o memcpy.
 
@@ -223,7 +225,7 @@ b = linhoho
 Opa, mas o que aconteceu aqui?
 Bom, vamos ver no desenho:
 
-![](imagens/memcpy_a_b_overlap_1.png)
+![](imagens/gif_overload_1.gif)
 
 Bom, conforme <span style="color:#33DAFF">b</span> iterava por <span style="color:#33DAFF">a</span> e alterava seus valores, acabou em algum momento alterando seus próprios valores também, já que os dois compartilhavam o mesmo endereço de memória.
 
