@@ -1,12 +1,14 @@
 ## Funções de manipulação de memória Pt 1 - memcpy vs memmove
 
-Contexto: Logo no começo da trilha de estudos na [**42**](https://www.42sp.org.br/), os alunos precisam recriar o funcionamento de algumas funções de manipulação de memória (entre outras), porém, será que a gente realmente aprende a usa-las? Pela minha experiência pessoal, muitas dessas funções são refatoradas ao longo do curso, adaptadas para necessidades específicas ou até deixadas de lado por falta de necessidade de uso, ou, pelo menos no meu caso, por falta de conhecimento mesmo.
+Contexto: Logo no começo da trilha de estudos na [**42**](https://www.42sp.org.br/), os alunos precisam recriar o funcionamento de algumas funções de manipulação de memória (entre outras). Pela minha experiência pessoal, muitas dessas funções são refatoradas ao longo do curso, adaptadas para necessidades específicas ou até deixadas de lado por falta de necessidade de uso, ou, pelo menos no meu caso, por falta de conhecimento mesmo.
 
 Inicialmente não vemos muita utilidade em diversas funções que construímos da [**Libft**](https://github.com/rodrigo-br/libft_42) (nome do projeto), mas na verdade todas elas não só podem ser utilizadas em projetos futuros, como são muito importantes e facilitam muito a nossa vida, se a gente souber como usa-las.
 
 Para isso vim escrever sobre essas funções específicas que manipulam memória, pois creio que elas sejam as menos intuitivas ou talvez até as mais complexas de se entender mesmo.
 
-Para manipular a memória, primeiro é preciso entender minimamente o que é a memória e o que é isso que estamos manipulando.
+Para manipular a memória, primeiro é preciso entender minimamente o que é a memória e como funciona em C.
+
+No código abaixo, eu declaro algumas variáveis e envio a referência de cada uma delas para o printf.
 
 ```C
 #include <stdio.h>
@@ -50,6 +52,8 @@ Note que o char tem o menor endereço na memória, como ele ocupa apenas 1 byte,
 
 
 Tá, agora guarda essa ideia que já vamos voltar nela. Primeiro, vamos implementar o memcpy.
+
+
 
 Primeiro, acho válido dar uma lida no manual da própria função. Basta executar
 ```Shell
