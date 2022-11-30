@@ -336,7 +336,7 @@ Já evita cópias desnecessárias.
 
 Também é possível resolver o problema do overlap sem criar cópias, simplesmente escrevendo de trás pra frente. Como funciona?
 
-![](imagens/memcpy_a_b_overlap_4.png)
+![](imagens/gif_overload_3.gif)
 
 <p>Escrevendo de trás pra frente, a variável <span style="color:#33DAFF">a</span> perde seus valores somente após já te-lo copiado para <span style="color:#33DAFF">b</span>, no final das contas, eles terminam 'iguais' dentro do registro do overlap.</p>
 
