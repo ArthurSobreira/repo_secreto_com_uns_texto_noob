@@ -1,12 +1,18 @@
 ## Funções de manipulação de memória Pt 1 - memcpy vs memmove
 
-Contexto: Logo no começo da trilha de estudos na [**42**](https://www.42sp.org.br/), os alunos precisam recriar o funcionamento de algumas funções de manipulação de memória (entre outras). Pela minha experiência pessoal, muitas dessas funções são refatoradas ao longo do curso, adaptadas para necessidades específicas ou até deixadas de lado por falta de necessidade de uso, ou, pelo menos no meu caso, por falta de conhecimento mesmo.
+
+### Blablabla
+
+Logo no começo da trilha de estudos na [**42**](https://www.42sp.org.br/), os alunos precisam recriar o funcionamento de algumas funções de manipulação de memória (entre outras). Pela minha experiência pessoal, muitas dessas funções são refatoradas ao longo do curso, adaptadas para necessidades específicas ou até deixadas de lado por falta de necessidade de uso, ou, pelo menos no meu caso, por falta de conhecimento mesmo.
 
 Inicialmente não vemos muita utilidade em diversas funções que construímos da [**Libft**](https://github.com/rodrigo-br/libft_42) (nome do projeto), mas na verdade todas elas não só podem ser utilizadas em projetos futuros, como são muito importantes e facilitam muito a nossa vida, se a gente souber como usa-las.
 
-Para isso vim escrever sobre essas funções específicas que manipulam memória, pois creio que elas sejam as menos intuitivas ou talvez até as mais complexas de se entender mesmo.
+Por isso vim escrever sobre essas funções específicas que manipulam memória, pois creio que elas sejam as menos intuitivas ou talvez até as mais complexas de se entender mesmo.
 
 Para manipular a memória, primeiro é preciso entender minimamente o que é a memória e como funciona em C.
+
+
+### Como funciona a memória em C
 
 No código abaixo, eu declaro algumas variáveis e envio a referência de cada uma delas para o printf.
 
@@ -51,9 +57,12 @@ c = 112 // 10 ponteiros vazios (80 bytes)
 Note que o char tem o menor endereço na memória, como ele ocupa apenas 1 byte, então a próxima variável já está 1 posição de distância. Como o x (int) ocupa 4 bytes, a próxima variável y (int) está 4 posições de distância de x, e, consequentemente, 5 de distância do char a.
 
 
+
 Tá, agora guarda essa ideia que já vamos voltar nela. Primeiro, vamos implementar o memcpy.
 
+---
 
+### Memcpy
 
 Primeiro, acho válido dar uma lida no manual da própria função. Basta executar
 ```Shell
@@ -227,7 +236,7 @@ b = linhoho
 ```
 
 Opa, mas o que aconteceu aqui?
-Bom, vamos ver no desenho:
+Bom, vamos ver na GIF:
 
 ![](imagens/gif_overload_1.gif)
 
@@ -261,14 +270,17 @@ Ok, agora claramente temos um problema, já que pedimos size de <span style="col
 
 ![](imagens/memcpy_a_b_overlap_2.png)
 
-Então vamos entender. O primeiro caracter de b, é exatamente o mesmo endereço do terceiro caractere de a. Quando a escreve em b, ele também está escrevendo em si mesmo, alterando caracteres que ele AINDA não copiou em nenhum outro lugar.
+Então vamos entender. O primeiro caracter de <span style="color:#33DAFF">b</span>, é exatamente o mesmo endereço do terceiro caractere de <span style="color:#33DAFF">a</span>. Quando <span style="color:#33DAFF">a</span> escreve em <span style="color:#33DAFF">b</span>, ele também está escrevendo em si mesmo, alterando caracteres que ele AINDA não copiou em nenhum outro lugar.
 Então, continuando essas operações, acontece isso:
 
-![](imagens/memcpy_a_b_overlap_3.png)
+![](imagens/gif_overload_2.gif)
 
-(Fiquei com preguiça de desenhar todo o processo mas é essa a ideia).
 
 Okay, neste caso, claramente falhamos em copiar, mas este é um erro esperado do memcpy. Conforme sugerido no próprio manual, devemos usar o memmove para solucionar esse problema. Mas como? Como o memmove faz isso? Bom, vamos analisar o que o manual nos diz:
+
+
+## Memmove
+
 
 ```
 man memmove
@@ -314,7 +326,7 @@ The memmove() function copies n
 
 Okay, criar um buffer temporário para não perder os valores parece então ser a solução do memmove. Mas vou propor uma um pouco diferente:
 
--> Vimos que caso o dest seja menor que o src, o memcpy funciona. Então só precisamos tratar o overlap na outra situação, né. Logo:
+Vimos que caso o dest seja menor que o src, o memcpy funciona. Então só precisamos tratar o overlap na outra situação, né. Logo:
 ```C
 if (src > dest)
 		return(ft_memcpy(dest, src, n));
@@ -334,3 +346,21 @@ Também é possível resolver o problema do overlap sem criar cópias, simplesme
 cacavalin
 cavalin
 ```
+
+No final de contas teríamos o seguinte código:
+
+<details>
+	<summary>SPOILER</summary>
+
+```C
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
+	if (src > dest)
+		return(ft_memcpy(dest, src, n));
+	while (n--)
+		((unsigned char *)dest)[n] = ((unsigned char *)src)[n];
+	return (dest);
+}
+```
+
+</details>
